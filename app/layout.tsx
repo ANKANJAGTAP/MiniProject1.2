@@ -23,11 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          defer
-          src={process.env.UMAMI_DOMAIN}
-          data-website-id={process.env.UMAMI_SITE_ID}
-        ></Script>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="23a9e6cb-5216-4b0c-8d63-a8afb68f1127"></script>
         {/* <Analytics /> */}
       </head>
       <body className={inter.className}>
