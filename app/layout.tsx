@@ -6,6 +6,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import RoleRedirect from '@/components/RoleRedirect';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Toaster />
         </AuthProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
