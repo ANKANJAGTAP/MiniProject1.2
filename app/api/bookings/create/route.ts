@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     console.log('6. All required fields present');
 
     // Parse slot data
-    let slot;
+    let slot: { day: string; startTime: string; endTime: string };
     try {
       slot = JSON.parse(slotData);
       console.log('7. Slot data parsed successfully:', slot);

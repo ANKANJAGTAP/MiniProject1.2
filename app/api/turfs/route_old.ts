@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectMongoDB } from '@/lib/mongodb';
 import Turf from '@/app/models/Turf';
+import User from '@/app/models/User';
 
 export async function GET(request: NextRequest) {
   try {
