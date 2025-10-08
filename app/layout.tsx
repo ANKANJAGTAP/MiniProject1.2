@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
 import RoleRedirect from '@/components/RoleRedirect';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Script from "next/script";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,6 +21,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          defer
+          src={process.env.UMAMI_DOMAIN}
+          data-website-id={process.env.UMAMI_SITE_ID}
+        ></Script>
+        {/* <Analytics /> */}
+      </head>
       <body className={inter.className}>
         <AuthProvider>
           <RoleRedirect>
