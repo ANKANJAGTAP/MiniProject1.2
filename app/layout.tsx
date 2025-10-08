@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
 import RoleRedirect from '@/components/RoleRedirect';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           </RoleRedirect>
           <Toaster />
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
