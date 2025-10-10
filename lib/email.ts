@@ -54,7 +54,7 @@ export async function sendBookingNotificationEmail(
     } = bookingDetails;
 
     const mailOptions = {
-      from: `"TurfBook Notifications" <${process.env.EMAIL_USER}>`,
+      from: `"OutFyld Notifications" <${process.env.EMAIL_USER}>`,
       to: ownerEmail,
       subject: `🔔 New Booking Request - ${turfName}`,
       html: `
@@ -233,10 +233,10 @@ export async function sendBookingNotificationEmail(
             </div>
             
             <div class="footer">
-              <p><strong>TurfBook</strong> - Your Turf Management Platform</p>
+              <p><strong>OutFyld</strong> - Your Turf Management Platform</p>
               <p>This is an automated notification. Please do not reply to this email.</p>
               <p style="margin-top: 10px;">
-                Need help? Contact us at support@turfbook.com
+                Need help? Contact us at admin@outfyld.in
               </p>
             </div>
           </div>
@@ -265,7 +265,7 @@ Please log in to your dashboard to review and approve/reject this booking.
 Dashboard URL: ${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/owner/dashboard
 
 Best regards,
-TurfBook Team
+OutFyld Team
       `,
     };
 
@@ -295,7 +295,7 @@ export async function sendBookingConfirmationEmail(
       : `❌ Booking Rejected - ${turfName}`;
     
     const mailOptions = {
-      from: `"TurfBook" <${process.env.EMAIL_USER}>`,
+      from: `"OutFyld" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject,
       html: `
@@ -359,7 +359,7 @@ export async function sendBookingConfirmationEmail(
               `}
             </div>
             <div class="footer">
-              <p>TurfBook - Your Turf Booking Platform</p>
+              <p>OutFyld - Your Turf Booking Platform</p>
             </div>
           </div>
         </body>

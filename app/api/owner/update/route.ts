@@ -64,103 +64,19 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const {
       businessName,
-      phone,
-      upiQrCode,
-      turfImages,
-      sportsOffered,
-      customSport,
-      amenities,
-      about,
-      availableSlots,
-      pricing,
-      location
+      phone
     } = body;
 
-    // Validate required fields for owners
-    if (!upiQrCode || !upiQrCode.url || !upiQrCode.public_id) {
-      return NextResponse.json(
-        { error: 'UPI QR code is required' },
-        { status: 400 }
-      );
-    }
+    // Build update object with only allowed fields
+    const updateData: any = {};
+    if (businessName !== undefined) updateData.businessName = businessName;
+    if (phone !== undefined) updateData.phone = phone;
 
-    if (!turfImages || !Array.isArray(turfImages) || turfImages.length === 0) {
-      return NextResponse.json(
-        { error: 'At least one turf image is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!sportsOffered || !Array.isArray(sportsOffered) || sportsOffered.length === 0) {
-      return NextResponse.json(
-        { error: 'At least one sport must be selected' },
-        { status: 400 }
-      );
-    }
-
-    if (sportsOffered.includes('Other') && (!customSport || customSport.trim().length === 0)) {
-      return NextResponse.json(
-        { error: 'Custom sport name is required when "Other" is selected' },
-        { status: 400 }
-      );
-    }
-
-    if (!about || about.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'About section is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!availableSlots || !Array.isArray(availableSlots) || availableSlots.length === 0) {
-      return NextResponse.json(
-        { error: 'At least one time slot is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!pricing || pricing <= 0) {
-      return NextResponse.json(
-        { error: 'Valid pricing is required' },
-        { status: 400 }
-      );
-    }
-
-    // Validate time slots format
-    for (const slot of availableSlots) {
-      if (!slot.day || !slot.startTime || !slot.endTime) {
-        return NextResponse.json(
-          { error: 'Invalid time slot format' },
-          { status: 400 }
-        );
-      }
-      
-      // Validate time format (HH:MM)
-      const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      if (!timeRegex.test(slot.startTime) || !timeRegex.test(slot.endTime)) {
-        return NextResponse.json(
-          { error: 'Invalid time format. Use HH:MM format' },
-          { status: 400 }
-        );
-      }
-    }
-
-    // Update user with owner-specific fields
+    // Update user with basic profile fields only
+    // Turf-related fields should be managed through /api/turfs/manage endpoint
     const updatedUser = await User.findOneAndUpdate(
       { uid },
-      {
-        businessName,
-        phone,
-        upiQrCode,
-        turfImages,
-        sportsOffered,
-        customSport: sportsOffered.includes('Other') ? customSport : undefined,
-        amenities: amenities || [],
-        about,
-        availableSlots,
-        pricing,
-        location: location || {}
-      },
+      updateData,
       { new: true, runValidators: true }
     );
 
@@ -174,17 +90,10 @@ export async function PUT(request: NextRequest) {
         role: updatedUser.role,
         businessName: updatedUser.businessName,
         phone: updatedUser.phone,
-        upiQrCode: updatedUser.upiQrCode,
-        turfImages: updatedUser.turfImages,
-        sportsOffered: updatedUser.sportsOffered,
-        customSport: updatedUser.customSport,
-        amenities: updatedUser.amenities,
-        about: updatedUser.about,
-        availableSlots: updatedUser.availableSlots,
-        pricing: updatedUser.pricing,
-        location: updatedUser.location,
         emailVerified: updatedUser.emailVerified,
         isActive: updatedUser.isActive,
+        verificationStatus: updatedUser.verificationStatus,
+        isVerifiedByAdmin: updatedUser.isVerifiedByAdmin,
         createdAt: updatedUser.createdAt,
         updatedAt: updatedUser.updatedAt
       }
@@ -263,17 +172,11 @@ export async function GET(request: NextRequest) {
         role: user.role,
         businessName: user.businessName,
         phone: user.phone,
-        upiQrCode: user.upiQrCode,
-        turfImages: user.turfImages,
-        sportsOffered: user.sportsOffered,
-        customSport: user.customSport,
-        amenities: user.amenities,
-        about: user.about,
-        availableSlots: user.availableSlots,
-        pricing: user.pricing,
-        location: user.location,
         emailVerified: user.emailVerified,
         isActive: user.isActive,
+        verificationStatus: user.verificationStatus,
+        isVerifiedByAdmin: user.isVerifiedByAdmin,
+        paymentVerified: user.paymentVerified,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       }

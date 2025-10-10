@@ -81,7 +81,7 @@ export default function BrowsePage() {
   const [browseData, setBrowseData] = useState<BrowseData | null>(null);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
       <BrowseHeader 
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
@@ -89,8 +89,8 @@ export default function BrowsePage() {
         onSortChange={setSortBy}
       />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
+        <div className="grid lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
           <div className="lg:col-span-1">
             <FilterSidebar 
               filters={filters}
@@ -107,6 +107,9 @@ export default function BrowsePage() {
               selectedSports={filters.sport ? [filters.sport] : []}
               priceRange={filters.priceRange as [number, number]}
               selectedAmenities={filters.amenities}
+              selectedLocation={filters.location}
+              selectedRating={filters.rating}
+              sortBy={sortBy}
               availableCities={browseData?.filters.cities || []}
               availableSports={browseData?.filters.sports || []}
               onDataLoad={setBrowseData}

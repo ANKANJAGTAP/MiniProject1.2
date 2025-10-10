@@ -156,7 +156,7 @@ export default function VerifyEmailPage() {
           <div className="text-center pt-4">
             <p className="text-sm text-gray-500">
               Having trouble?{' '}
-              <a href="mailto:support@turfbook.com" className="text-green-600 hover:underline">
+              <a href="mailto:admin@outfyld.in" className="text-green-600 hover:underline">
                 Contact Support
               </a>
             </p>

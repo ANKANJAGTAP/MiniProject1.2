@@ -51,6 +51,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if owner is verified by admin
+    if (user.verificationStatus !== 'approved' || !user.isVerifiedByAdmin) {
+      return NextResponse.json(
+        { 
+          error: 'Account not verified', 
+          message: 'Your account must be verified by an administrator before you can add turfs. Please wait for admin approval.',
+          verificationStatus: user.verificationStatus 
+        },
+        { status: 403 }
+      );
+    }
+
     // Get the request body
     const body = await request.json();
     const {
@@ -185,6 +197,18 @@ export async function PUT(request: NextRequest) {
     if (user.role !== 'owner') {
       return NextResponse.json(
         { error: 'User is not an owner' },
+        { status: 403 }
+      );
+    }
+
+    // Check if owner is verified by admin
+    if (user.verificationStatus !== 'approved' || !user.isVerifiedByAdmin) {
+      return NextResponse.json(
+        { 
+          error: 'Account not verified', 
+          message: 'Your account must be verified by an administrator before you can update turfs.',
+          verificationStatus: user.verificationStatus 
+        },
         { status: 403 }
       );
     }
@@ -350,6 +374,18 @@ export async function DELETE(request: NextRequest) {
     if (user.role !== 'owner') {
       return NextResponse.json(
         { error: 'User is not an owner' },
+        { status: 403 }
+      );
+    }
+
+    // Check if owner is verified by admin
+    if (user.verificationStatus !== 'approved' || !user.isVerifiedByAdmin) {
+      return NextResponse.json(
+        { 
+          error: 'Account not verified', 
+          message: 'Your account must be verified by an administrator before you can delete turfs.',
+          verificationStatus: user.verificationStatus 
+        },
         { status: 403 }
       );
     }

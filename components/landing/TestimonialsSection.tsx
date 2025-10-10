@@ -6,7 +6,7 @@ export function TestimonialsSection() {
     {
       name: 'Rahul Patil',
       role: 'Cricket Enthusiast',
-      content: 'TurfBook has completely changed how we book cricket grounds. No more calling multiple places - everything is available at one click!',
+      content: 'OutFyld has completely changed how we book cricket grounds. No more calling multiple places - everything is available at one click!',
       rating: 5,
       location: 'Sangli'
     },
@@ -20,7 +20,7 @@ export function TestimonialsSection() {
     {
       name: 'Sunil Kadam',
       role: 'Turf Owner',
-      content: 'Managing bookings was a nightmare before TurfBook. Now everything is automated and I can focus on maintaining the facility quality.',
+      content: 'Managing bookings was a nightmare before OutFyld. Now everything is automated and I can focus on maintaining the facility quality.',
       rating: 5,
       location: 'Sangli'
     }
@@ -35,7 +35,7 @@ export function TestimonialsSection() {
           </h3>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Join hundreds of satisfied players and turf owners who have transformed 
-            their sports experience with TurfBook.
+            their sports experience with OutFyld.
           </p>
         </div>
 

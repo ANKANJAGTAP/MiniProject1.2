@@ -81,9 +81,9 @@ Amount: ₹${totalAmount}
 
 Booking ID: ${bookingId}
 
-Please log in to your TurfBook dashboard to review and approve this booking.
+Please log in to your OutFyld dashboard to review and approve this booking.
 
-- TurfBook Team
+- OutFyld Team
     `.trim();
 
     const response = await client.messages.create({
@@ -125,8 +125,8 @@ export async function sendBookingStatusSMS(
     }
 
     const message = status === 'confirmed'
-      ? `✅ Great news ${customerName}! Your booking for ${turfName} has been CONFIRMED. See you on the turf! - TurfBook`
-      : `❌ Hi ${customerName}, your booking for ${turfName} has been rejected. Refund will be processed in 5-7 days. - TurfBook`;
+      ? `✅ Great news ${customerName}! Your booking for ${turfName} has been CONFIRMED. See you on the turf! - OutFyld`
+      : `❌ Hi ${customerName}, your booking for ${turfName} has been rejected. Refund will be processed in 5-7 days. - OutFyld`;
 
     const response = await client.messages.create({
       body: message,

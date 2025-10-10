@@ -36,39 +36,33 @@ interface IUser extends Document {
   uid: string;
   name: string;
   email: string;
-  role: 'customer' | 'owner';
+  role: 'customer' | 'owner' | 'admin';
   phone?: string;
   businessName?: string;
   emailVerified: boolean;
   isActive: boolean;
-  upiQrCode?: {
+  
+  // Subscription plan fields (for turf owners)
+  subscriptionPlan?: 'basic' | 'premium';
+  subscriptionAmount?: number; // Monthly amount (1000 for basic, 2000 for premium)
+  paymentScreenshot?: {
     url: string;
     public_id: string;
   };
-  turfImages?: Array<{
-    url: string;
-    public_id: string;
-  }>;
-  sportsOffered?: string[];
-  customSport?: string;
-  amenities?: string[];
-  about?: string;
-  availableSlots?: Array<{
-    day: string;
-    startTime: string;
-    endTime: string;
-  }>;
-  pricing?: number;
-  location?: {
-    address?: string;
-    city?: string;
-    state?: string;
-    pincode?: string;
-    coordinates?: {
-      latitude?: number;
-      longitude?: number;
-    };
+  
+  // Admin verification fields (for turf owners)
+  isVerifiedByAdmin?: boolean;
+  paymentVerified?: boolean;
+  paymentDetails?: {
+    amount?: number;
+    date?: Date;
+    transactionId?: string;
+    method?: string; // e.g., 'UPI', 'Bank Transfer', 'Cash'
   };
+  verificationStatus?: 'pending' | 'approved' | 'rejected';
+  rejectionReason?: string;
+  verifiedBy?: string; // Admin UID who verified
+  verifiedAt?: Date;
 }
 
 const UserSchema = new mongoose.Schema({
@@ -89,7 +83,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: { 
     type: String, 
-    enum: ['customer', 'owner'], 
+    enum: ['customer', 'owner', 'admin'], 
     required: true 
   },
   phone: String,
@@ -103,133 +97,58 @@ const UserSchema = new mongoose.Schema({
     default: true
   },
   
-  // Owner-specific fields (only required when role is 'owner')
-  upiQrCode: {
+  // Subscription plan fields (for turf owners)
+  subscriptionPlan: {
+    type: String,
+    enum: ['basic', 'premium'],
+    required: function(this: IUser): boolean {
+      return this.role === 'owner' && this.verificationStatus !== 'pending';
+    }
+  },
+  subscriptionAmount: {
+    type: Number,
+    min: 0
+  },
+  paymentScreenshot: {
     type: CloudinaryImageSchema,
     required: function(this: IUser): boolean {
-      return this.role === 'owner';
+      return this.role === 'owner' && this.subscriptionPlan !== undefined;
     }
   },
   
-  turfImages: {
-    type: [CloudinaryImageSchema],
-    validate: {
-      validator: function(this: IUser, images: any[]): boolean {
-        if (this.role === 'owner') {
-          return images && images.length > 0;
-        }
-        return true;
-      },
-      message: 'At least one turf image is required for owners'
+  // Admin verification fields (for turf owners)
+  isVerifiedByAdmin: {
+    type: Boolean,
+    default: function(this: IUser): boolean {
+      // Auto-approve customers and admins, require verification for owners
+      return this.role !== 'owner';
     }
   },
-  
-  sportsOffered: {
-    type: [String],
-    enum: ['Football', 'Cricket', 'Badminton', 'Tennis', 'Basketball', 'Other'],
-    validate: {
-      validator: function(this: IUser, sports: string[]): boolean {
-        if (this.role === 'owner') {
-          return sports && sports.length > 0;
-        }
-        return true;
-      },
-      message: 'At least one sport must be selected for owners'
-    }
+  paymentVerified: {
+    type: Boolean,
+    default: false
   },
-  
-  customSport: {
+  paymentDetails: {
+    amount: Number,
+    date: Date,
+    transactionId: String,
+    method: String
+  },
+  verificationStatus: {
     type: String,
-    required: function(this: IUser): boolean {
-      return this.role === 'owner' && Boolean(this.sportsOffered && this.sportsOffered.includes('Other'));
+    enum: ['pending', 'approved', 'rejected'],
+    default: function(this: IUser): string {
+      return this.role === 'owner' ? 'pending' : 'approved';
     }
   },
-  
-  amenities: {
-    type: [String],
-    enum: ['Floodlights', 'Parking', 'Washroom', 'Equipment'],
-    default: []
-  },
-  
-  about: {
-    type: String,
-    maxlength: 1000,
-    required: function(this: IUser): boolean {
-      return this.role === 'owner';
-    }
-  },
-  
-  availableSlots: {
-    type: [TimeSlotSchema],
-    validate: {
-      validator: function(this: IUser, slots: any[]): boolean {
-        if (this.role === 'owner') {
-          return slots && slots.length > 0;
-        }
-        return true;
-      },
-      message: 'At least one time slot is required for owners'
-    }
-  },
-  
-  // Additional owner fields for business management
-  pricing: {
-    type: Number,
-    min: 0,
-    required: function(this: IUser): boolean {
-      return this.role === 'owner';
-    }
-  },
-  
-  location: {
-    address: String,
-    city: String,
-    state: String,
-    pincode: String,
-    coordinates: {
-      latitude: Number,
-      longitude: Number
-    }
-  }
+  rejectionReason: String,
+  verifiedBy: String, // Admin UID who verified
+  verifiedAt: Date
 }, {
   timestamps: true // This adds createdAt and updatedAt automatically
 });
 
-// Create indexes for faster queries
+// Create indexes for faster queries (email and uid already have unique indexes)
 UserSchema.index({ role: 1 });
-UserSchema.index({ 'location.city': 1 });
-UserSchema.index({ sportsOffered: 1 });
-
-// Pre-save middleware to validate owner-specific fields
-UserSchema.pre('save', function(this: IUser, next) {
-  if (this.role === 'owner') {
-    // Ensure required owner fields are present
-    if (!this.upiQrCode || !this.turfImages || this.turfImages.length === 0) {
-      return next(new Error('UPI QR code and turf images are required for owners'));
-    }
-    
-    if (!this.sportsOffered || this.sportsOffered.length === 0) {
-      return next(new Error('At least one sport must be selected for owners'));
-    }
-    
-    if (this.sportsOffered.includes('Other') && !this.customSport) {
-      return next(new Error('Custom sport name is required when "Other" is selected'));
-    }
-    
-    if (!this.about || this.about.trim().length === 0) {
-      return next(new Error('About section is required for owners'));
-    }
-    
-    if (!this.availableSlots || this.availableSlots.length === 0) {
-      return next(new Error('At least one time slot is required for owners'));
-    }
-    
-    if (!this.pricing || this.pricing <= 0) {
-      return next(new Error('Valid pricing is required for owners'));
-    }
-  }
-  
-  next();
-});
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

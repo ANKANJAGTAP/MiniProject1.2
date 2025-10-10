@@ -35,7 +35,8 @@ export default function RoleRedirect({ children }: RoleRedirectProps) {
       // Redirect from auth pages to appropriate dashboard
       if (authRoutes.some(route => pathname.startsWith(route))) {
         if (user.role === 'owner') {
-          router.push('/dashboard/turf-owner');
+          // Redirect owners to their dashboard (dashboard will check subscription)
+          router.push('/owner/dashboard');
           return;
         } else if (user.role === 'customer') {
           router.push('/dashboard/player');

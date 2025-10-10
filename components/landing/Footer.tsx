@@ -12,7 +12,7 @@ export function Footer() {
                 <MapPin className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-green-400">TurfBook</h1>
+                <h1 className="text-2xl font-bold text-green-400">OutFyld</h1>
                 <p className="text-xs text-gray-400">Sangli & Miraj</p>
               </div>
             </div>
@@ -37,19 +37,19 @@ export function Footer() {
             <h4 className="font-semibold mb-6 text-green-400">Quick Links</h4>
             <ul className="space-y-3">
               <li><Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse Turfs</Link></li>
-              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">How It Works</Link></li>
-              <li><Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</Link></li>
+              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">About Us</Link></li>
               <li><Link href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Find Turfs</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-6 text-green-400">For Business</h4>
             <ul className="space-y-3">
-              <li><Link href="/owner/register" className="text-gray-400 hover:text-white transition-colors">List Your Turf</Link></li>
+              <li><Link href="/auth/register" className="text-gray-400 hover:text-white transition-colors">List Your Turf</Link></li>
               <li><Link href="/owner/dashboard" className="text-gray-400 hover:text-white transition-colors">Owner Dashboard</Link></li>
-              <li><Link href="/partner" className="text-gray-400 hover:text-white transition-colors">Become a Partner</Link></li>
-              <li><Link href="/support" className="text-gray-400 hover:text-white transition-colors">Business Support</Link></li>
+              <li><Link href="/auth/register" className="text-gray-400 hover:text-white transition-colors">Become a Partner</Link></li>
+              <li><Link href="/contact" className="text-gray-400 hover:text-white transition-colors">Business Support</Link></li>
             </ul>
           </div>
 
@@ -62,11 +62,11 @@ export function Footer() {
               </div>
               <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-3 text-green-400" />
-                <span className="text-gray-400 text-sm">+91 98765 43210</span>
+                <a href="tel:+917058526196" className="text-gray-400 text-sm hover:text-green-400">+91 7058526196</a>
               </div>
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-3 text-green-400" />
-                <span className="text-gray-400 text-sm">support@turfbook.in</span>
+                <a href="mailto:admin@outfyld.in" className="text-gray-400 text-sm hover:text-green-400">admin@outfyld.in</a>
               </div>
             </div>
           </div>
@@ -75,16 +75,16 @@ export function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © 2024 TurfBook. All rights reserved.
+              © 2024 OutFyld. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link href="/about" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link href="/about" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/refund" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link href="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Refund Policy
               </Link>
             </div>

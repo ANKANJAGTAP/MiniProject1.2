@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Phone, MapPin, Users, Star, Clock, Activity } from 'lucide-react';
 
-// About Page - TurfBook
+// About Page - OutFyld
 // Single-file React component (Next.js app router compatible)
 // Uses the same UI primitives as your dashboards (Card, Button, Badge)
 // Replace dummy text/images with real content as needed.
@@ -45,7 +45,7 @@ export default function AboutPage() {
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">About TurfBook</h1>
+            <h1 className="text-2xl font-bold">About OutFyld</h1>
             <p className="text-sm text-gray-600 mt-1">Connecting players with the best local turfs — fast, fair, and friendly.</p>
           </div>
           <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ export default function AboutPage() {
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center mb-10">
           <div className="lg:col-span-2">
             <h2 className="text-3xl font-bold mb-3">We make playing together easy.</h2>
-            <p className="text-gray-600 mb-6">TurfBook helps players discover local turfs, book reliable slots, and lets turf owners manage availability and earnings with confidence.</p>
+            <p className="text-gray-600 mb-6">OutFyld helps players discover local turfs, book reliable slots, and lets turf owners manage availability and earnings with confidence.</p>
 
             <div className="flex gap-3 mb-6">
               <Button className="inline-flex items-center" size="lg">Get Started</Button>
@@ -181,7 +181,7 @@ export default function AboutPage() {
                   <div className="p-2 bg-indigo-50 rounded"><Mail className="h-5 w-5 text-indigo-600"/></div>
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-sm text-gray-600">support@turfbook.example</div>
+                    <div className="text-sm text-gray-600">admin@outfyld.in</div>
                   </div>
                 </div>
 

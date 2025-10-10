@@ -113,11 +113,11 @@ export default function RegisterPage() {
               <MapPin className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-green-600">TurfBook</h1>
+              <h1 className="text-2xl font-bold text-green-600">OutFyld</h1>
               <p className="text-xs text-gray-500">Sangli & Miraj</p>
             </div>
           </Link>
-          <h2 className="text-3xl font-bold text-gray-900">Join TurfBook</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Join OutFyld</h2>
           <p className="text-gray-600 mt-2">Create your account to get started</p>
         </div>
 

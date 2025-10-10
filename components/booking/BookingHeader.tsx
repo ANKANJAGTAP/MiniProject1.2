@@ -34,7 +34,7 @@ export function BookingHeader() {
                 <MapPin className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-green-600">TurfBook</h1>
+                <h1 className="text-2xl font-bold text-green-600">OutFyld</h1>
                 <p className="text-xs text-gray-500">Book Your Slot</p>
               </div>
             </Link>

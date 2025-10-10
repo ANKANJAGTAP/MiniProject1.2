@@ -12,11 +12,13 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '12');
     const search = searchParams.get('search') || '';
-    const sport = searchParams.get('sport') || '';
+    const sportsParam = searchParams.get('sports') || searchParams.get('sport') || '';
+    const amenitiesParam = searchParams.get('amenities') || '';
     const city = searchParams.get('city') || '';
     const minPrice = parseInt(searchParams.get('minPrice') || '0');
     const maxPrice = parseInt(searchParams.get('maxPrice') || '10000');
-    const sortBy = searchParams.get('sortBy') || 'createdAt';
+    const minRating = parseFloat(searchParams.get('minRating') || '0');
+    const sortBy = searchParams.get('sortBy') || 'newest';
 
     // Build query for active turfs
     const query: any = {
@@ -34,8 +36,20 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    if (sport && sport !== 'all') {
-      query.sportsOffered = { $in: [sport] };
+    // Handle multiple sports
+    if (sportsParam && sportsParam !== 'all') {
+      const sports = sportsParam.split(',').map((s: string) => s.trim()).filter((s: string) => s);
+      if (sports.length > 0) {
+        query.sportsOffered = { $in: sports };
+      }
+    }
+
+    // Handle multiple amenities
+    if (amenitiesParam) {
+      const amenities = amenitiesParam.split(',').map((a: string) => a.trim()).filter((a: string) => a);
+      if (amenities.length > 0) {
+        query.amenities = { $all: amenities };
+      }
     }
 
     if (city && city !== 'all') {
@@ -44,6 +58,11 @@ export async function GET(request: NextRequest) {
 
     if (minPrice > 0 || maxPrice < 10000) {
       query.pricing = { $gte: minPrice, $lte: maxPrice };
+    }
+
+    // Add rating filter
+    if (minRating > 0) {
+      query.rating = { $gte: minRating };
     }
 
     // Sort options

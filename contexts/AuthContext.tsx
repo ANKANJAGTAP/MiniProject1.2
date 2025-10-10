@@ -19,11 +19,26 @@ interface User {
   uid: string;
   name: string;
   email: string;
-  role: 'customer' | 'owner';
+  role: 'customer' | 'owner' | 'admin';
   phone?: string;
   businessName?: string;
   emailVerified: boolean;
   isActive: boolean;
+  
+  // Admin verification fields (for turf owners)
+  isVerifiedByAdmin?: boolean;
+  paymentVerified?: boolean;
+  paymentDetails?: {
+    amount?: number;
+    date?: Date;
+    transactionId?: string;
+    method?: string;
+  };
+  verificationStatus?: 'pending' | 'approved' | 'rejected';
+  rejectionReason?: string;
+  verifiedBy?: string;
+  verifiedAt?: Date;
+  
   createdAt: Date;
   updatedAt: Date;
 }
@@ -50,14 +65,16 @@ interface AuthContextType {
   // Utility methods
   isOwner: () => boolean;
   isCustomer: () => boolean;
+  isAdmin: () => boolean;
   isEmailVerified: () => boolean;
+  isVerifiedOwner: () => boolean;
 }
 
 interface RegisterData {
   name: string;
   email: string;
   password: string;
-  role: 'customer' | 'owner';
+  role: 'customer' | 'owner' | 'admin';
   phone?: string;
   businessName?: string;
 }
@@ -167,7 +184,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log('User saved to MongoDB successfully');
 
       // Show success message or redirect to email verification page
-      alert('Registration successful! Please check your email to verify your account before logging in.');
+      if (userData.role === 'owner') {
+        alert('Registration successful! Please check your email to verify your account. Note: Your account will need to be verified by an administrator before you can list your turf.');
+      } else {
+        alert('Registration successful! Please check your email to verify your account before logging in.');
+      }
       
     } catch (error: any) {
       console.error('Registration error:', error);
@@ -221,7 +242,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Utility methods
   const isOwner = () => user?.role === 'owner';
   const isCustomer = () => user?.role === 'customer';
+  const isAdmin = () => user?.role === 'admin';
   const isEmailVerified = () => firebaseUser?.emailVerified || false;
+  const isVerifiedOwner = () => user?.role === 'owner' && user?.isVerifiedByAdmin === true && user?.verificationStatus === 'approved';
 
   // Handle Firebase auth state changes
   useEffect(() => {
@@ -270,7 +293,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       // Don't redirect if already on the correct page
       if (currentPath.includes('/auth/')) {
-        if (user.role === 'owner') {
+        if (user.role === 'admin') {
+          router.push('/admin/dashboard');
+        } else if (user.role === 'owner') {
           router.push('/dashboard/turf-owner');
         } else if (user.role === 'customer') {
           router.push('/dashboard/player');
@@ -292,7 +317,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     refreshUserData,
     isOwner,
     isCustomer,
+    isAdmin,
     isEmailVerified,
+    isVerifiedOwner,
   };
 
   return (

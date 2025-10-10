@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Prepare user data
-    const userData = {
+    // Prepare user data with verification fields for owners
+    const userData: any = {
       uid,
       name,
       email: email.toLowerCase(),
@@ -55,6 +55,18 @@ export async function POST(request: NextRequest) {
       createdAt: new Date(),
       updatedAt: new Date()
     };
+    
+    // Add verification fields for turf owners
+    if (role === 'owner') {
+      userData.isVerifiedByAdmin = false;
+      userData.paymentVerified = false;
+      userData.verificationStatus = 'pending';
+    } else {
+      // Auto-approve customers and other roles
+      userData.isVerifiedByAdmin = true;
+      userData.paymentVerified = false;
+      userData.verificationStatus = 'approved';
+    }
     
     // Insert new user
     const result = await users.insertOne(userData);

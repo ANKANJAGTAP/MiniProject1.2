@@ -8,11 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Linkedin } from 'lucide-react';
-
-// Contact Page - TurfBook
-// Single-file React component (Next.js app router compatible)
-// Uses your UI primitives and Tailwind. Replace dummy contact details with real ones as needed.
+import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Linkedin, CheckCircle } from 'lucide-react';
+import { LandingHeader } from '@/components/landing/LandingHeader';
+import { Footer } from '@/components/landing/Footer';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: 'General', message: '' });
@@ -26,7 +24,6 @@ export default function ContactPage() {
     e.preventDefault();
     setError(null);
 
-    // basic client validation
     if (!form.name || !form.email || !form.message) {
       setError('Please fill name, email and message');
       return;
@@ -36,10 +33,22 @@ export default function ContactPage() {
     setSubmitted(false);
 
     try {
-      // TODO: replace with actual POST /api/contact or serverless function
-      await new Promise((r) => setTimeout(r, 900));
-      setSubmitted(true);
-      setForm({ name: '', email: '', phone: '', subject: 'General', message: '' });
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+        setForm({ name: '', email: '', phone: '', subject: 'General', message: '' });
+      } else {
+        setError(data.error || 'Failed to send message. Please try again.');
+      }
     } catch (err: any) {
       console.error(err);
       setError('Something went wrong. Please try again later.');
@@ -49,107 +58,133 @@ export default function ContactPage() {
   }
 
   const company = {
-    name: 'TurfBook',
-    email: 'support@turfbook.example',
-    phone: '+91 98765 43210',
+    name: 'OutFyld',
+    email: 'admin@outfyld.in',
+    phone: '+91 7058526196',
     address: 'Walchand College of Engineering, Sangli, Maharashtra, India',
   };
 
   const team = [
-    { id: 1, name: 'Support — Sneha Kulkarni', email: 'sneha@turfbook.example', phone: '+91 91234 56789', hours: '9:00 – 18:00' },
-    { id: 2, name: 'Sales — Rohit Desai', email: 'sales@turfbook.example', phone: '+91 92345 67890', hours: '10:00 – 18:00' },
-    { id: 3, name: 'Partnerships — Meera Joshi', email: 'partners@turfbook.example', phone: '+91 93456 78901', hours: 'Mon–Fri 10:00 – 17:00' }
+    { id: 1, name: 'Support Team', email: 'admin@outfyld.in', phone: '+91 7058526196', hours: '9:00 AM – 6:00 PM' },
+    { id: 2, name: 'Sales & Partnerships', email: 'admin@outfyld.in', phone: '+91 7058526196', hours: '10:00 AM – 6:00 PM' },
+    { id: 3, name: 'Technical Support', email: 'admin@outfyld.in', phone: '+91 7058526196', hours: 'Mon–Fri 9:00 AM – 6:00 PM' }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Contact TurfBook</h1>
-            <p className="text-sm text-gray-600 mt-1">We’re here to help — choose a department or send us a message.</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/" className="text-sm text-indigo-600">Home</Link>
-            <Link href="/about" className="text-sm text-gray-700">About</Link>
-            <Link href="/browse" className="text-sm text-gray-700">Browse</Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+      <LandingHeader />
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact OutFyld</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            We're here to help — choose a department or send us a message.
+          </p>
+        </div>
+
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="lg:col-span-2">
-            <Card className="p-6">
+            <Card className="p-6 shadow-lg">
               <CardHeader>
-                <CardTitle>Send us a message</CardTitle>
+                <CardTitle className="text-2xl">Send us a message</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name">Full name</Label>
-                      <Input id="name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@example.com" />
-                    </div>
+                {submitted ? (
+                  <div className="text-center py-8">
+                    <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+                    <p className="text-gray-600 mb-6">
+                      Thanks — your message was sent. We'll reply within 24 hours.
+                    </p>
+                    <Button onClick={() => setSubmitted(false)} className="bg-green-500 hover:bg-green-600">
+                      Send Another Message
+                    </Button>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="phone">Phone (optional)</Label>
-                      <Input id="phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="+91 9XXXXXXXXX" />
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="name">Full name</Label>
+                        <Input id="name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" required />
+                      </div>
+                      <div>
+                        <Label htmlFor="email">Email</Label>
+                        <Input id="email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@example.com" required />
+                      </div>
                     </div>
-                    <div>
-                      <Label htmlFor="subject">Department</Label>
-                      <select id="subject" className="w-full mt-1 p-2 border rounded" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}>
-                        {departments.map(d => <option key={d} value={d}>{d}</option>)}
-                      </select>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="phone">Phone (optional)</Label>
+                        <Input id="phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="+91 9XXXXXXXXX" />
+                      </div>
+                      <div>
+                        <Label htmlFor="subject">Department</Label>
+                        <select 
+                          id="subject" 
+                          title="Select department"
+                          className="w-full mt-1 p-2 border rounded" 
+                          value={form.subject} 
+                          onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
+                        >
+                          {departments.map(d => <option key={d} value={d}>{d}</option>)}
+                        </select>
+                      </div>
                     </div>
-                  </div>
 
-                  <div>
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="Tell us what's up" />
-                  </div>
+                    <div>
+                      <Label htmlFor="message">Message</Label>
+                      <Textarea id="message" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="Tell us what's up" rows={6} required />
+                    </div>
 
-                  {error && <div className="text-sm text-red-600">{error}</div>}
-                  {submitted && <div className="text-sm text-green-600">Thanks — your message was sent. We’ll reply within 24 hours.</div>}
+                    {error && <div className="text-sm text-red-600 p-3 bg-red-50 rounded">{error}</div>}
+                    {submitted && <div className="text-sm text-green-600 p-3 bg-green-50 rounded">Thanks — your message was sent. We'll reply within 24 hours.</div>}
 
-                  <div className="flex items-center gap-3">
-                    <Button type="submit" disabled={submitting}>{submitting ? 'Sending...' : 'Send message'}</Button>
-                    <Button variant="outline" onClick={() => { setForm({ name: '', email: '', phone: '', subject: 'General', message: '' }); setError(null); setSubmitted(false); }}>Reset</Button>
-                  </div>
-                </form>
+                    <div className="flex items-center gap-3">
+                      <Button type="submit" disabled={submitting} className="bg-green-500 hover:bg-green-600">
+                        {submitting ? 'Sending...' : 'Send message'}
+                      </Button>
+                      <Button 
+                        type="button"
+                        variant="outline" 
+                        onClick={() => { 
+                          setForm({ name: '', email: '', phone: '', subject: 'General', message: '' }); 
+                          setError(null); 
+                          setSubmitted(false); 
+                        }}
+                      >
+                        Reset
+                      </Button>
+                    </div>
+                  </form>
+                )}
               </CardContent>
             </Card>
 
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="p-4">
+              <Card className="p-4 shadow">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-indigo-50 rounded"><Mail className="h-5 w-5 text-indigo-600"/></div>
+                  <div className="p-2 bg-green-50 rounded"><Mail className="h-5 w-5 text-green-600"/></div>
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-sm text-gray-600">{company.email}</div>
+                    <a href={`mailto:${company.email}`} className="text-sm text-gray-600 hover:text-green-600">{company.email}</a>
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-4">
+              <Card className="p-4 shadow">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-indigo-50 rounded"><Phone className="h-5 w-5 text-indigo-600"/></div>
+                  <div className="p-2 bg-green-50 rounded"><Phone className="h-5 w-5 text-green-600"/></div>
                   <div>
                     <div className="font-medium">Phone</div>
-                    <div className="text-sm text-gray-600">{company.phone}</div>
+                    <a href={`tel:${company.phone}`} className="text-sm text-gray-600 hover:text-green-600">{company.phone}</a>
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-4">
+              <Card className="p-4 shadow">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-indigo-50 rounded"><MapPin className="h-5 w-5 text-indigo-600"/></div>
+                  <div className="p-2 bg-green-50 rounded"><MapPin className="h-5 w-5 text-green-600"/></div>
                   <div>
                     <div className="font-medium">Address</div>
                     <div className="text-sm text-gray-600">{company.address}</div>
@@ -157,12 +192,12 @@ export default function ContactPage() {
                 </div>
               </Card>
 
-              <Card className="p-4">
+              <Card className="p-4 shadow">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-indigo-50 rounded"><Clock className="h-5 w-5 text-indigo-600"/></div>
+                  <div className="p-2 bg-green-50 rounded"><Clock className="h-5 w-5 text-green-600"/></div>
                   <div>
                     <div className="font-medium">Business hours</div>
-                    <div className="text-sm text-gray-600">Mon – Fri: 09:00 – 18:00<br/>Sat: 10:00 – 14:00<br/>Sun: Closed</div>
+                    <div className="text-sm text-gray-600">Mon – Fri: 09:00 AM – 6:00 PM<br/>Sat: 10:00 AM – 2:00 PM<br/>Sun: Closed</div>
                   </div>
                 </div>
               </Card>
@@ -172,11 +207,11 @@ export default function ContactPage() {
               <h3 className="text-lg font-semibold mb-3">Support team</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {team.map(member => (
-                  <Card key={member.id} className="p-4">
+                  <Card key={member.id} className="p-4 shadow">
                     <div className="font-medium">{member.name}</div>
                     <div className="text-xs text-gray-500">{member.hours}</div>
-                    <div className="text-sm text-gray-600 mt-2">{member.email}</div>
-                    <div className="text-sm text-gray-600">{member.phone}</div>
+                    <a href={`mailto:${member.email}`} className="text-sm text-gray-600 hover:text-green-600 mt-2 block">{member.email}</a>
+                    <a href={`tel:${member.phone}`} className="text-sm text-gray-600 hover:text-green-600">{member.phone}</a>
                   </Card>
                 ))}
               </div>
@@ -184,40 +219,41 @@ export default function ContactPage() {
           </div>
 
           <aside className="space-y-4">
-            <Card className="p-4">
+            <Card className="p-4 shadow-lg">
               <CardHeader>
                 <CardTitle>Quick contact</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-sm text-gray-700">Need urgent help? Call our helpline or email us. We aim to reply within 24 hours for general inquiries and 2 hours for urgent support.</div>
                 <Separator className="my-3"/>
-                <div className="text-sm"><strong>Hotline:</strong> {company.phone}</div>
-                <div className="text-sm mt-1"><strong>Email:</strong> {company.email}</div>
+                <div className="text-sm"><strong>Hotline:</strong> <a href={`tel:${company.phone}`} className="text-green-600 hover:underline">{company.phone}</a></div>
+                <div className="text-sm mt-1"><strong>Email:</strong> <a href={`mailto:${company.email}`} className="text-green-600 hover:underline">{company.email}</a></div>
                 <div className="mt-3 flex gap-2">
-                  <a href="#" aria-label="Follow on Twitter" className="p-2 rounded bg-blue-50"><Twitter className="h-4 w-4 text-blue-500"/></a>
-                  <a href="#" aria-label="Follow on Facebook" className="p-2 rounded bg-blue-50"><Facebook className="h-4 w-4 text-blue-600"/></a>
-                  <a href="#" aria-label="Follow on LinkedIn" className="p-2 rounded bg-blue-50"><Linkedin className="h-4 w-4 text-blue-700"/></a>
+                  <a href="#" aria-label="Follow on Twitter" className="p-2 rounded bg-blue-50 hover:bg-blue-100"><Twitter className="h-4 w-4 text-blue-500"/></a>
+                  <a href="#" aria-label="Follow on Facebook" className="p-2 rounded bg-blue-50 hover:bg-blue-100"><Facebook className="h-4 w-4 text-blue-600"/></a>
+                  <a href="#" aria-label="Follow on LinkedIn" className="p-2 rounded bg-blue-50 hover:bg-blue-100"><Linkedin className="h-4 w-4 text-blue-700"/></a>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="p-4">
+            <Card className="p-4 shadow-lg">
               <CardHeader>
                 <CardTitle>Office location</CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Placeholder map - replace with real embed (Google Maps) in production */}
-                <div className="w-full h-48 bg-gray-100 rounded flex items-center justify-center text-gray-400">Map placeholder (replace with Google Maps iframe)</div>
-                <div className="text-xs text-gray-500 mt-2">Walchand College of Engineering, Sangli</div>
+                <div className="w-full h-48 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-sm">
+                  Map placeholder (replace with Google Maps iframe)
+                </div>
+                <div className="text-xs text-gray-500 mt-2">{company.address}</div>
               </CardContent>
             </Card>
 
-            <Card className="p-4">
+            <Card className="p-4 shadow-lg">
               <CardHeader>
                 <CardTitle>Press & Media</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm text-gray-700">For press enquiries, reach out to media@turfbook.example</div>
+                <div className="text-sm text-gray-700">For press enquiries, reach out to <a href={`mailto:${company.email}`} className="text-green-600 hover:underline">{company.email}</a></div>
                 <div className="text-sm text-gray-500 mt-2">Press kit and logos available on request.</div>
               </CardContent>
             </Card>
@@ -225,16 +261,18 @@ export default function ContactPage() {
         </section>
 
         <div className="bg-white p-6 rounded shadow-sm">
-          <h3 className="font-semibold">Need help integrating TurfBook?</h3>
-          <p className="text-sm text-gray-600">If you run multiple turfs or a sports complex, our partnerships team can walk you through bulk onboarding and API integration.</p>
-          <div className="mt-4 flex gap-3">
-            <Link href="/owner/register"><Button>Become a partner</Button></Link>
-            <Link href="/contact"><Button variant="outline">Contact Partnerships</Button></Link>
+          <h3 className="font-semibold text-lg mb-2">Need help integrating OutFyld?</h3>
+          <p className="text-sm text-gray-600 mb-4">If you run multiple turfs or a sports complex, our partnerships team can walk you through bulk onboarding and API integration.</p>
+          <div className="flex gap-3">
+            <Link href="/auth/register"><Button className="bg-green-500 hover:bg-green-600">Become a partner</Button></Link>
+            <Button variant="outline">Contact Partnerships</Button>
           </div>
         </div>
 
-        <div className="text-xs text-gray-400 mt-6">Surprising fact: The first widely used artificial turf, AstroTurf, cost around $20,000 to install in 1966 — about $180k in today’s dollars. 🏟️</div>
+        <div className="text-xs text-gray-400 mt-6">Surprising fact: The first widely used artificial turf, AstroTurf, cost around $20,000 to install in 1966 — about $180k in today's dollars. 🏟️</div>
       </main>
+
+      <Footer />
     </div>
   );
 }

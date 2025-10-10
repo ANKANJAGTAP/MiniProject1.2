@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Phone, MapPin, Users, Star, Clock, Activity } from 'lucide-react';
+import { LandingHeader } from '@/components/landing/LandingHeader';
+import { Footer } from '@/components/landing/Footer';
 
-// About Page - TurfBook
+// About Page - OutFyld
 // Single-file React component (Next.js app router compatible)
 // Uses the same UI primitives as your dashboards (Card, Button, Badge)
 // Replace dummy text/images with real content as needed.
@@ -41,27 +43,16 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">About TurfBook</h1>
-            <p className="text-sm text-gray-600 mt-1">Connecting players with the best local turfs — fast, fair, and friendly.</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/" className="text-sm text-indigo-600">Home</Link>
-            <Link href="/browse" className="text-sm text-gray-700">Browse</Link>
-            <Link href="/owner/dashboard" className="text-sm text-gray-700">Owner Dashboard</Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+      <LandingHeader />
+      
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Hero */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center mb-10">
           <div className="lg:col-span-2">
             <h2 className="text-3xl font-bold mb-3">We make playing together easy.</h2>
-            <p className="text-gray-600 mb-6">TurfBook helps players discover local turfs, book reliable slots, and lets turf owners manage availability and earnings with confidence.</p>
+            <p className="text-gray-600 mb-6">OutFyld helps players discover local turfs, book reliable slots, and lets turf owners manage availability and earnings with confidence.</p>
 
             <div className="flex gap-3 mb-6">
               <Button className="inline-flex items-center" size="lg">Get Started</Button>
@@ -181,7 +172,7 @@ export default function AboutPage() {
                   <div className="p-2 bg-indigo-50 rounded"><Mail className="h-5 w-5 text-indigo-600"/></div>
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-sm text-gray-600">support@turfbook.example</div>
+                    <div className="text-sm text-gray-600">admin@outfyld.in</div>
                   </div>
                 </div>
 
@@ -191,7 +182,7 @@ export default function AboutPage() {
                   <div className="p-2 bg-indigo-50 rounded"><Phone className="h-5 w-5 text-indigo-600"/></div>
                   <div>
                     <div className="font-medium">Phone</div>
-                    <div className="text-sm text-gray-600">+91 98765 43210</div>
+                    <div className="text-sm text-gray-600">+91 7058526196</div>
                   </div>
                 </div>
 
@@ -229,6 +220,8 @@ export default function AboutPage() {
 
         <div className="text-xs text-gray-400 mt-6">Surprising fact: The first widely used synthetic turf (AstroTurf) was installed in 1966 in the Houston Astrodome. 🏟️</div>
       </main>
+      
+      <Footer />
     </div>
   );
 }

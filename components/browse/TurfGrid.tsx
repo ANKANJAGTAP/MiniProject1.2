@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { StarRating } from '@/components/ui/star-rating';
 import { MapPin, Users, Loader2 } from 'lucide-react';
 
 interface TurfData {
@@ -52,6 +53,9 @@ interface TurfGridProps {
   selectedSports?: string[];
   priceRange?: [number, number];
   selectedAmenities?: string[];
+  selectedLocation?: string;
+  selectedRating?: number;
+  sortBy?: string;
   availableCities?: string[];
   availableSports?: string[];
   onDataLoad?: (data: any) => void;
@@ -62,6 +66,9 @@ export default function TurfGrid({
   selectedSports = [], 
   priceRange,
   selectedAmenities = [],
+  selectedLocation = '',
+  selectedRating = 0,
+  sortBy = 'newest',
   availableCities = [],
   availableSports = [],
   onDataLoad 
@@ -95,8 +102,20 @@ export default function TurfGrid({
       params.append('amenities', selectedAmenities.join(','));
     }
 
+    if (selectedLocation && selectedLocation.trim()) {
+      params.append('city', selectedLocation.trim());
+    }
+
+    if (selectedRating && selectedRating > 0) {
+      params.append('minRating', selectedRating.toString());
+    }
+
+    if (sortBy) {
+      params.append('sortBy', sortBy);
+    }
+
     return params.toString();
-  }, [searchQuery, selectedSports, priceRange, selectedAmenities]);
+  }, [searchQuery, selectedSports, priceRange, selectedAmenities, selectedLocation, selectedRating, sortBy]);
 
   const fetchTurfs = useCallback(async () => {
     try {
@@ -241,6 +260,16 @@ export default function TurfGrid({
               </CardTitle>
               
               <div className="space-y-2 text-sm text-gray-600">
+                {/* Star Rating */}
+                <div className="mb-2">
+                  <StarRating 
+                    rating={turf.rating || 0} 
+                    reviewCount={turf.reviewCount || 0}
+                    size="sm"
+                    showCount={true}
+                  />
+                </div>
+
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
                   <span className="truncate">{getDisplayLocation(turf)}</span>
