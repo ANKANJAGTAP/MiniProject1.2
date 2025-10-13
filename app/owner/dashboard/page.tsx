@@ -174,8 +174,8 @@ function OwnerDashboard() {
           return;
         }
 
-        // Approved - allow adding turf
-        router.push('/dashboard/turf-owner');
+        // Approved - stay on owner dashboard
+        // User is already on owner dashboard, no need to redirect
       }
     } catch (error) {
       console.error('Error checking subscription:', error);
@@ -472,7 +472,7 @@ function OwnerDashboard() {
                         variant="outline" 
                         size="sm" 
                         className="flex-1"
-                        onClick={() => router.push(`/dashboard/turf-owner?turfId=${turf._id}`)}
+                        onClick={() => router.push(`/owner/turfs/${turf._id}`)}
                       >
                         <Edit className="h-4 w-4 mr-1" />
                         Edit

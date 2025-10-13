@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

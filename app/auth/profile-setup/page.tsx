@@ -75,7 +75,7 @@ export default function ProfileSetupPage() {
       // Redirect based on role
       setTimeout(() => {
         if (formData.role === 'owner') {
-          window.location.href = '/dashboard/turf-owner';
+          window.location.href = '/owner/dashboard';
         } else {
           window.location.href = '/';
         }

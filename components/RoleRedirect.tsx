@@ -11,7 +11,7 @@ interface RoleRedirectProps {
 /**
  * Component that handles role-based redirections
  * - Customers: redirect to home page (/) after login
- * - Owners: redirect to owner dashboard (/dashboard/turf-owner) after login
+ * - Owners: redirect to owner dashboard (/owner/dashboard) after login
  * - Protects auth pages from authenticated users
  * - Redirects unauthorized users from protected pages
  */
@@ -27,7 +27,7 @@ export default function RoleRedirect({ children }: RoleRedirectProps) {
     // Routes that don't require authentication
     const publicRoutes = ['/', '/browse', '/book'];
     const authRoutes = ['/auth/login', '/auth/register'];
-    const ownerRoutes = ['/dashboard/turf-owner'];
+    const ownerRoutes = ['/owner/dashboard', '/owner/turfs', '/owner/subscription'];
     const customerRoutes = ['/dashboard/player'];
 
     // If user is authenticated
@@ -52,7 +52,7 @@ export default function RoleRedirect({ children }: RoleRedirectProps) {
 
       // Protect customer routes from owners
       if (customerRoutes.some(route => pathname.startsWith(route)) && user.role !== 'customer') {
-        router.push('/dashboard/turf-owner');
+        router.push('/owner/dashboard');
         return;
       }
     } 

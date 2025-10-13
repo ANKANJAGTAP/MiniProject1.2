@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/users - Create a new user in MongoDB
  */

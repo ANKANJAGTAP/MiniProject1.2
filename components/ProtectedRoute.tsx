@@ -55,7 +55,7 @@ export default function ProtectedRoute({
     if (requireRole && user && user.role !== requireRole) {
       // Redirect to appropriate dashboard based on actual role
       if (user.role === 'owner') {
-        router.push('/dashboard/turf-owner');
+        router.push('/owner/dashboard');
       } else {
         router.push('/');
       }

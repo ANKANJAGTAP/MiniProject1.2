@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectMongoDB } from '@/lib/mongodb';
 import Settings from '@/app/models/Settings';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/admin/settings
  * Get admin settings including payment QR code

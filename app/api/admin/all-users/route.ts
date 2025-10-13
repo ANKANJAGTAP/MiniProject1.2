@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectMongoDB } from '@/lib/mongodb';
 import User from '@/app/models/User';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/admin/all-users
  * Returns all users in the system (for admin management)

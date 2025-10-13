@@ -3,6 +3,9 @@ import { connectMongoDB } from '@/lib/mongodb';
 import Turf from '@/app/models/Turf';
 import Booking from '@/app/models/Booking';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }

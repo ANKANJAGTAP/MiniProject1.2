@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import Turf from '@/app/models/Turf';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {

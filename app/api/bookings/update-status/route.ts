@@ -4,6 +4,9 @@ import Booking from '@/app/models/Booking';
 import User from '@/app/models/User';
 import mongoose from 'mongoose';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 export async function PUT(request: NextRequest) {
   try {
     await connectMongoDB();

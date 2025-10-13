@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();

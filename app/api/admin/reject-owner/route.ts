@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectMongoDB } from '@/lib/mongodb';
 import User from '@/app/models/User';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

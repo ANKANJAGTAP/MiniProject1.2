@@ -7,6 +7,9 @@ import { v2 as cloudinary } from 'cloudinary';
 import { sendBookingNotificationEmail } from '@/lib/email';
 import { sendBookingNotificationSMS } from '@/lib/sms';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

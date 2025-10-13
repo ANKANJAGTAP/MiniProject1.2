@@ -11,14 +11,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Verify transporter configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('Email transporter verification failed:', error);
-  } else {
-    console.log('Email server is ready to send messages');
-  }
-});
+// Note: Removed transporter.verify() as it causes DYNAMIC_SERVER_USAGE error in Next.js App Router
+// Verification will happen automatically when sending emails
 
 interface BookingDetails {
   customerName: string;

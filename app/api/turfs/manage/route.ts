@@ -3,6 +3,9 @@ import { connectMongoDB } from '@/lib/mongodb';
 import User from '@/app/models/User';
 import Turf from '@/app/models/Turf';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Get the authorization header

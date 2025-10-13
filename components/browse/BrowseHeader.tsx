@@ -81,7 +81,7 @@ export function BrowseHeader({ searchQuery, onSearchChange, sortBy, onSortChange
                   </Badge>
                 </div>
                 
-                <Link href={user.role === 'owner' ? '/dashboard/turf-owner' : '/dashboard/player'}>
+                <Link href={user.role === 'owner' ? '/owner/dashboard' : '/dashboard/player'}>
                   <Button variant="outline" size="sm">
                     Dashboard
                   </Button>

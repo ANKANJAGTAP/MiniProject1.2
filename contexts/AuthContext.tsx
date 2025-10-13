@@ -296,7 +296,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (user.role === 'admin') {
           router.push('/admin/dashboard');
         } else if (user.role === 'owner') {
-          router.push('/dashboard/turf-owner');
+          router.push('/owner/dashboard');
         } else if (user.role === 'customer') {
           router.push('/dashboard/player');
         } else {

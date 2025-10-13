@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectMongoDB } from '@/lib/mongodb';
 import User from '@/app/models/User';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 // Temporarily removed Firebase Admin SDK to debug connection issues
 console.log('Firebase Admin not initialized, skipping token verification for development');
 

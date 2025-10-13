@@ -3,6 +3,9 @@ import { connectMongoDB } from '@/lib/mongodb';
 import Booking from '@/app/models/Booking';
 import { format, parseISO, startOfDay, endOfDay } from 'date-fns';
 
+// Tell Next.js this route should be dynamic (not statically generated)
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { turfId: string } }
